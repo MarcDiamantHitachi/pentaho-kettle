@@ -2,7 +2,7 @@
  *
  * Pentaho Data Integration
  *
- * Copyright (C) 2002-2020 by Hitachi Vantara : http://www.pentaho.com
+ * Copyright (C) 2002-2023 by Hitachi Vantara : http://www.pentaho.com
  *
  *******************************************************************************
  *
@@ -195,6 +195,7 @@ public class BeanInjectionInfo {
     private final String groupName;
     protected final List<BeanLevelInfo> path;
     public final int pathArraysCount;
+    private boolean require;
 
     public Property( String name, String groupName, List<BeanLevelInfo> path ) {
       this.name = name;
@@ -224,6 +225,8 @@ public class BeanInjectionInfo {
     public String getDescription() {
       return BeanInjectionInfo.this.getDescription( name );
     }
+
+    public boolean isRequire() { return require; }
 
     public Class<?> getPropertyClass() {
       return path.get( path.size() - 1 ).leafClass;

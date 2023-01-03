@@ -70,7 +70,7 @@ public class DeleteMetaTest implements InitializerInterface<StepMetaInterface> {
   public void setUpLoadSave() throws Exception {
     PluginRegistry.init( false );
     List<String> attributes =
-        Arrays.asList( "schemaName", "tableName", "commitSize", "databaseMeta", "keyStream", "keyLookup", "keyCondition", "keyStream2" );
+        Arrays.asList( "schemaName", "tableName", "commitSize", "databaseMeta", "fieldStream", "fieldLookup", "fieldCondition", "fieldStream2" );
 
     Map<String, String> getterMap = new HashMap<String, String>();
     Map<String, String> setterMap = new HashMap<String, String>();
@@ -78,10 +78,10 @@ public class DeleteMetaTest implements InitializerInterface<StepMetaInterface> {
         new ArrayLoadSaveValidator<String>( new StringLoadSaveValidator(), 5 );
 
     Map<String, FieldLoadSaveValidator<?>> attrValidatorMap = new HashMap<String, FieldLoadSaveValidator<?>>();
-    attrValidatorMap.put( "keyStream", stringArrayLoadSaveValidator );
-    attrValidatorMap.put( "keyLookup", stringArrayLoadSaveValidator );
-    attrValidatorMap.put( "keyCondition", stringArrayLoadSaveValidator );
-    attrValidatorMap.put( "keyStream2", stringArrayLoadSaveValidator );
+    attrValidatorMap.put( "fieldStream", stringArrayLoadSaveValidator );
+    attrValidatorMap.put( "fieldLookup", stringArrayLoadSaveValidator );
+    attrValidatorMap.put( "fieldCondition", stringArrayLoadSaveValidator );
+    attrValidatorMap.put( "fieldStream2", stringArrayLoadSaveValidator );
     attrValidatorMap.put( "databaseMeta", new DatabaseMetaLoadSaveValidator() );
 
     Map<String, FieldLoadSaveValidator<?>> typeValidatorMap = new HashMap<String, FieldLoadSaveValidator<?>>();
@@ -181,13 +181,13 @@ public class DeleteMetaTest implements InitializerInterface<StepMetaInterface> {
 
     deleteMeta.readRep( rep, metaStore, idStep, databases );
 
-    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "keyStream" ) ).length );
-    assertEquals( keyNameValue, ( (String[]) getInternalState( deleteMeta, "keyStream" ) )[0] );
-    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "keyLookup" ) ).length );
-    assertEquals( keyFieldValue, ( (String[]) getInternalState( deleteMeta, "keyLookup" ) )[0] );
-    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "keyCondition" ) ).length );
-    assertEquals( keyConditionValue, ( (String[]) getInternalState( deleteMeta, "keyCondition" ) )[0] );
-    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "keyStream2" ) ).length );
-    assertEquals( keyName2Value, ( (String[]) getInternalState( deleteMeta, "keyStream2" ) )[0] );
+    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "fieldStream" ) ).length );
+    assertEquals( keyNameValue, ( (String[]) getInternalState( deleteMeta, "fieldStream" ) )[0] );
+    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "fieldLookup" ) ).length );
+    assertEquals( keyFieldValue, ( (String[]) getInternalState( deleteMeta, "fieldLookup" ) )[0] );
+    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "fieldCondition" ) ).length );
+    assertEquals( keyConditionValue, ( (String[]) getInternalState( deleteMeta, "fieldCondition" ) )[0] );
+    assertEquals( 1, ( (String[]) getInternalState( deleteMeta, "fieldStream2" ) ).length );
+    assertEquals( keyName2Value, ( (String[]) getInternalState( deleteMeta, "fieldStream2" ) )[0] );
   }
 }

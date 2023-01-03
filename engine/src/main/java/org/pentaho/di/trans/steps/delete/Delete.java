@@ -2,7 +2,7 @@
  *
  * Pentaho Data Integration
  *
- * Copyright (C) 2002-2019 by Hitachi Vantara : http://www.pentaho.com
+ * Copyright (C) 2002-2023 by Hitachi Vantara : http://www.pentaho.com
  *
  *******************************************************************************
  *
@@ -64,7 +64,7 @@ public class Delete extends BaseStep implements StepInterface {
     Object[] deleteRow = new Object[data.deleteParameterRowMeta.size()];
     int deleteIndex = 0;
 
-    for ( int i = 0; i < meta.getKeyStream().length; i++ ) {
+    for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
       if ( data.keynrs[i] >= 0 ) {
         deleteRow[deleteIndex] = row[data.keynrs[i]];
         deleteIndex++;
@@ -116,28 +116,28 @@ public class Delete extends BaseStep implements StepInterface {
         logDetailed( BaseMessages.getString( PKG, "Delete.Log.CheckingRow" ) + getInputRowMeta().getString( r ) );
       }
 
-      data.keynrs = new int[meta.getKeyStream().length];
-      data.keynrs2 = new int[meta.getKeyStream().length];
-      for ( int i = 0; i < meta.getKeyStream().length; i++ ) {
-        data.keynrs[i] = getInputRowMeta().indexOfValue( meta.getKeyStream()[i] );
+      data.keynrs = new int[meta.getDeleteFields().length];
+      data.keynrs2 = new int[meta.getDeleteFields().length];
+      for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
+        data.keynrs[i] = getInputRowMeta().indexOfValue( meta.getDeleteFields()[i].getFieldStream() );
         if ( data.keynrs[i] < 0 && // couldn't find field!
-          !"IS NULL".equalsIgnoreCase( meta.getKeyCondition()[i] ) && // No field needed!
-          !"IS NOT NULL".equalsIgnoreCase( meta.getKeyCondition()[i] ) // No field needed!
+          !"IS NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) && // No field needed!
+          !"IS NOT NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) // No field needed!
         ) {
           throw new KettleStepException( BaseMessages.getString( PKG, "Delete.Exception.FieldRequired", meta
-            .getKeyStream()[i] ) );
+            .getDeleteFields()[i].getFieldStream() ) );
         }
-        data.keynrs2[i] = meta.getKeyStream2().length == 0 ? -1
-          : getInputRowMeta().indexOfValue( meta.getKeyStream2()[i] );
+        data.keynrs2[i] = meta.getDeleteFields().length == 0 ? -1
+          : getInputRowMeta().indexOfValue( meta.getDeleteFields()[i].getFieldStream2() );
         if ( data.keynrs2[i] < 0 && // couldn't find field!
-          "BETWEEN".equalsIgnoreCase( meta.getKeyCondition()[i] ) // 2 fields needed!
+          "BETWEEN".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) // 2 fields needed!
         ) {
           throw new KettleStepException( BaseMessages.getString( PKG, "Delete.Exception.FieldRequired", meta
-            .getKeyStream2()[i] ) );
+            .getDeleteFields()[i].getFieldStream2() ) );
         }
 
         if ( log.isDebug() ) {
-          logDebug( BaseMessages.getString( PKG, "Delete.Log.FieldInfo", meta.getKeyStream()[i] ) + data.keynrs[i] );
+          logDebug( BaseMessages.getString( PKG, "Delete.Log.FieldInfo", meta.getDeleteFields()[i].getFieldStream() ) + data.keynrs[i] );
         }
       }
 
@@ -185,21 +185,21 @@ public class Delete extends BaseStep implements StepInterface {
 
     sql += "WHERE ";
 
-    for ( int i = 0; i < meta.getKeyLookup().length; i++ ) {
+    for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
       if ( i != 0 ) {
         sql += "AND   ";
       }
-      sql += databaseMeta.quoteField( meta.getKeyLookup()[i] );
-      if ( "BETWEEN".equalsIgnoreCase( meta.getKeyCondition()[i] ) ) {
+      sql += databaseMeta.quoteField( meta.getDeleteFields()[i].getFieldLookup() );
+      if ( "BETWEEN".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) ) {
         sql += " BETWEEN ? AND ? ";
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getKeyStream()[i] ) );
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getKeyStream2()[i] ) );
-      } else if ( "IS NULL".equalsIgnoreCase( meta.getKeyCondition()[i] )
-        || "IS NOT NULL".equalsIgnoreCase( meta.getKeyCondition()[i] ) ) {
-        sql += " " + meta.getKeyCondition()[i] + " ";
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream() ) );
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream2() ) );
+      } else if ( "IS NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() )
+        || "IS NOT NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) ) {
+        sql += " " + meta.getDeleteFields()[i].getFieldCondition() + " ";
       } else {
-        sql += " " + meta.getKeyCondition()[i] + " ? ";
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getKeyStream()[i] ) );
+        sql += " " + meta.getDeleteFields()[i].getFieldCondition() + " ? ";
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream() ) );
       }
     }
 

@@ -2,7 +2,7 @@
  *
  * Pentaho Data Integration
  *
- * Copyright (C) 2002-2018 by Hitachi Vantara : http://www.pentaho.com
+ * Copyright (C) 2002-2023 by Hitachi Vantara : http://www.pentaho.com
  *
  *******************************************************************************
  *
@@ -260,8 +260,8 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
     fdlKey.top = new FormAttachment( wCommit, margin );
     wlKey.setLayoutData( fdlKey );
 
-    int nrKeyCols = 4;
-    int nrKeyRows = ( input.getKeyStream() != null ? input.getKeyStream().length : 1 );
+    int nrKeyCols = 5;
+    int nrKeyRows = ( input.getDeleteFields() != null ? input.getDeleteFields().length : 1 );
 
     ciKey = new ColumnInfo[nrKeyCols];
     ciKey[0] =
@@ -269,14 +269,18 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
         BaseMessages.getString( PKG, "DeleteDialog.ColumnInfo.TableField" ), ColumnInfo.COLUMN_TYPE_CCOMBO,
         new String[] { "" }, false );
     ciKey[1] =
+            new ColumnInfo(
+            BaseMessages.getString( PKG, "MetaInjectDialog.Column.RequiredField" ),
+            ColumnInfo.COLUMN_TYPE_TEXT, false, true );
+    ciKey[2] =
       new ColumnInfo(
         BaseMessages.getString( PKG, "DeleteDialog.ColumnInfo.Comparator" ), ColumnInfo.COLUMN_TYPE_CCOMBO,
         new String[] { "=", "<>", "<", "<=", ">", ">=", "LIKE", "BETWEEN", "IS NULL", "IS NOT NULL" } );
-    ciKey[2] =
+    ciKey[3] =
       new ColumnInfo(
         BaseMessages.getString( PKG, "DeleteDialog.ColumnInfo.StreamField1" ), ColumnInfo.COLUMN_TYPE_CCOMBO,
         new String[] { "" }, false );
-    ciKey[3] =
+    ciKey[4] =
       new ColumnInfo(
         BaseMessages.getString( PKG, "DeleteDialog.ColumnInfo.StreamField2" ), ColumnInfo.COLUMN_TYPE_CCOMBO,
         new String[] { "" }, false );
@@ -425,20 +429,20 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
 
     wCommit.setText( input.getCommitSizeVar() );
 
-    if ( input.getKeyStream() != null ) {
-      for ( int i = 0; i < input.getKeyStream().length; i++ ) {
+    if ( input.getDeleteFields() != null ) {
+      for ( int i = 0; i < input.getDeleteFields().length; i++ ) {
         TableItem item = wKey.table.getItem( i );
-        if ( input.getKeyLookup()[i] != null ) {
-          item.setText( 1, input.getKeyLookup()[i] );
+        if ( input.getDeleteFields()[i].getFieldLookup() != null ) {
+          item.setText( 1, input.getDeleteFields()[i].getFieldLookup() );
         }
-        if ( input.getKeyCondition()[i] != null ) {
-          item.setText( 2, input.getKeyCondition()[i] );
+        if ( input.getDeleteFields()[i].getFieldCondition() != null ) {
+          item.setText( 2, input.getDeleteFields()[i].getFieldCondition() );
         }
-        if ( input.getKeyStream()[i] != null ) {
-          item.setText( 3, input.getKeyStream()[i] );
+        if ( input.getDeleteFields()[i].getFieldStream() != null ) {
+          item.setText( 3, input.getDeleteFields()[i].getFieldStream() );
         }
-        if ( input.getKeyStream2()[i] != null ) {
-          item.setText( 4, input.getKeyStream2()[i] );
+        if ( input.getDeleteFields()[i].getFieldStream2() != null ) {
+          item.setText( 4, input.getDeleteFields()[i].getFieldStream2() );
         }
       }
     }
@@ -536,10 +540,10 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
     //CHECKSTYLE:Indentation:OFF
     for ( int i = 0; i < nrkeys; i++ ) {
       TableItem item = wKey.getNonEmpty( i );
-      inf.getKeyLookup()[i] = item.getText( 1 );
-      inf.getKeyCondition()[i] = item.getText( 2 );
-      inf.getKeyStream()[i] = item.getText( 3 );
-      inf.getKeyStream2()[i] = item.getText( 4 );
+      inf.getDeleteFields()[i].setFieldLookup( item.getText( 1 ) );
+      inf.getDeleteFields()[i].setFieldCondition( item.getText( 2 ) );
+      inf.getDeleteFields()[i].setFieldStream( item.getText( 3 ) );
+      inf.getDeleteFields()[i].setFieldStream2( item.getText( 4 ) );
     }
 
     inf.setSchemaName( wSchema.getText() );
