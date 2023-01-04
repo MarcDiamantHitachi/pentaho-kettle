@@ -42,10 +42,10 @@ public class DeleteMetadataInjectionTest extends BaseMetadataInjectionTest<Delet
     check( "TARGET_SCHEMA", () -> meta.getSchemaName() );
     check( "TARGET_TABLE", () -> meta.getTableName() );
     check( "COMMIT_SIZE", () -> meta.getCommitSizeVar() );
-    check( "TABLE_NAME_FIELD", () -> meta.getDeleteFields()[0].getFieldLookup() );
-    check( "COMPARATOR", () -> meta.getDeleteFields()[0].getFieldCondition() );
-    check( "STREAM_FIELDNAME_1", () -> meta.getDeleteFields()[0].getFieldStream() );
-    check( "STREAM_FIELDNAME_2", () -> meta.getDeleteFields()[0].getFieldStream2() );
+    check( "TABLE_NAME_FIELD", () -> meta.getDeleteField()[0].getFieldLookup() );
+    check( "COMPARATOR", () -> meta.getDeleteField()[0].getFieldCondition() );
+    check( "STREAM_FIELDNAME_1", () -> meta.getDeleteField()[0].getFieldStream() );
+    check( "STREAM_FIELDNAME_2", () -> meta.getDeleteField()[0].getFieldStream2() );
     skipPropertyTest( "CONNECTIONNAME" );
   }
 }

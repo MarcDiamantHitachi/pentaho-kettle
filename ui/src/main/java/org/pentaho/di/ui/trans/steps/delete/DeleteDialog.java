@@ -261,7 +261,7 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
     wlKey.setLayoutData( fdlKey );
 
     int nrKeyCols = 5;
-    int nrKeyRows = ( input.getDeleteFields() != null ? input.getDeleteFields().length : 1 );
+    int nrKeyRows = ( input.getDeleteField() != null ? input.getDeleteField().length : 1 );
 
     ciKey = new ColumnInfo[nrKeyCols];
     ciKey[0] =
@@ -429,20 +429,20 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
 
     wCommit.setText( input.getCommitSizeVar() );
 
-    if ( input.getDeleteFields() != null ) {
-      for ( int i = 0; i < input.getDeleteFields().length; i++ ) {
+    if ( input.getDeleteField() != null ) {
+      for (int i = 0; i < input.getDeleteField().length; i++ ) {
         TableItem item = wKey.table.getItem( i );
-        if ( input.getDeleteFields()[i].getFieldLookup() != null ) {
-          item.setText( 1, input.getDeleteFields()[i].getFieldLookup() );
+        if ( input.getDeleteField()[i].getFieldLookup() != null ) {
+          item.setText( 1, input.getDeleteField()[i].getFieldLookup() );
         }
-        if ( input.getDeleteFields()[i].getFieldCondition() != null ) {
-          item.setText( 2, input.getDeleteFields()[i].getFieldCondition() );
+        if ( input.getDeleteField()[i].getFieldCondition() != null ) {
+          item.setText( 2, input.getDeleteField()[i].getFieldCondition() );
         }
-        if ( input.getDeleteFields()[i].getFieldStream() != null ) {
-          item.setText( 3, input.getDeleteFields()[i].getFieldStream() );
+        if ( input.getDeleteField()[i].getFieldStream() != null ) {
+          item.setText( 3, input.getDeleteField()[i].getFieldStream() );
         }
-        if ( input.getDeleteFields()[i].getFieldStream2() != null ) {
-          item.setText( 4, input.getDeleteFields()[i].getFieldStream2() );
+        if ( input.getDeleteField()[i].getFieldStream2() != null ) {
+          item.setText( 4, input.getDeleteField()[i].getFieldStream2() );
         }
       }
     }
@@ -540,10 +540,10 @@ public class DeleteDialog extends BaseStepDialog implements StepDialogInterface 
     //CHECKSTYLE:Indentation:OFF
     for ( int i = 0; i < nrkeys; i++ ) {
       TableItem item = wKey.getNonEmpty( i );
-      inf.getDeleteFields()[i].setFieldLookup( item.getText( 1 ) );
-      inf.getDeleteFields()[i].setFieldCondition( item.getText( 2 ) );
-      inf.getDeleteFields()[i].setFieldStream( item.getText( 3 ) );
-      inf.getDeleteFields()[i].setFieldStream2( item.getText( 4 ) );
+      inf.getDeleteField()[i].setFieldLookup( item.getText( 1 ) );
+      inf.getDeleteField()[i].setFieldCondition( item.getText( 2 ) );
+      inf.getDeleteField()[i].setFieldStream( item.getText( 3 ) );
+      inf.getDeleteField()[i].setFieldStream2( item.getText( 4 ) );
     }
 
     inf.setSchemaName( wSchema.getText() );

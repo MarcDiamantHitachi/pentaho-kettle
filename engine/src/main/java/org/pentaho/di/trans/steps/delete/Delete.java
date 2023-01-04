@@ -64,7 +64,7 @@ public class Delete extends BaseStep implements StepInterface {
     Object[] deleteRow = new Object[data.deleteParameterRowMeta.size()];
     int deleteIndex = 0;
 
-    for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
+    for (int i = 0; i < meta.getDeleteField().length; i++ ) {
       if ( data.keynrs[i] >= 0 ) {
         deleteRow[deleteIndex] = row[data.keynrs[i]];
         deleteIndex++;
@@ -116,28 +116,28 @@ public class Delete extends BaseStep implements StepInterface {
         logDetailed( BaseMessages.getString( PKG, "Delete.Log.CheckingRow" ) + getInputRowMeta().getString( r ) );
       }
 
-      data.keynrs = new int[meta.getDeleteFields().length];
-      data.keynrs2 = new int[meta.getDeleteFields().length];
-      for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
-        data.keynrs[i] = getInputRowMeta().indexOfValue( meta.getDeleteFields()[i].getFieldStream() );
+      data.keynrs = new int[meta.getDeleteField().length];
+      data.keynrs2 = new int[meta.getDeleteField().length];
+      for (int i = 0; i < meta.getDeleteField().length; i++ ) {
+        data.keynrs[i] = getInputRowMeta().indexOfValue( meta.getDeleteField()[i].getFieldStream() );
         if ( data.keynrs[i] < 0 && // couldn't find field!
-          !"IS NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) && // No field needed!
-          !"IS NOT NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) // No field needed!
+          !"IS NULL".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() ) && // No field needed!
+          !"IS NOT NULL".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() ) // No field needed!
         ) {
           throw new KettleStepException( BaseMessages.getString( PKG, "Delete.Exception.FieldRequired", meta
-            .getDeleteFields()[i].getFieldStream() ) );
+            .getDeleteField()[i].getFieldStream() ) );
         }
-        data.keynrs2[i] = meta.getDeleteFields().length == 0 ? -1
-          : getInputRowMeta().indexOfValue( meta.getDeleteFields()[i].getFieldStream2() );
+        data.keynrs2[i] = meta.getDeleteField().length == 0 ? -1
+          : getInputRowMeta().indexOfValue( meta.getDeleteField()[i].getFieldStream2() );
         if ( data.keynrs2[i] < 0 && // couldn't find field!
-          "BETWEEN".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) // 2 fields needed!
+          "BETWEEN".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() ) // 2 fields needed!
         ) {
           throw new KettleStepException( BaseMessages.getString( PKG, "Delete.Exception.FieldRequired", meta
-            .getDeleteFields()[i].getFieldStream2() ) );
+            .getDeleteField()[i].getFieldStream2() ) );
         }
 
         if ( log.isDebug() ) {
-          logDebug( BaseMessages.getString( PKG, "Delete.Log.FieldInfo", meta.getDeleteFields()[i].getFieldStream() ) + data.keynrs[i] );
+          logDebug( BaseMessages.getString( PKG, "Delete.Log.FieldInfo", meta.getDeleteField()[i].getFieldStream() ) + data.keynrs[i] );
         }
       }
 
@@ -185,21 +185,21 @@ public class Delete extends BaseStep implements StepInterface {
 
     sql += "WHERE ";
 
-    for ( int i = 0; i < meta.getDeleteFields().length; i++ ) {
+    for (int i = 0; i < meta.getDeleteField().length; i++ ) {
       if ( i != 0 ) {
         sql += "AND   ";
       }
-      sql += databaseMeta.quoteField( meta.getDeleteFields()[i].getFieldLookup() );
-      if ( "BETWEEN".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) ) {
+      sql += databaseMeta.quoteField( meta.getDeleteField()[i].getFieldLookup() );
+      if ( "BETWEEN".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() ) ) {
         sql += " BETWEEN ? AND ? ";
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream() ) );
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream2() ) );
-      } else if ( "IS NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() )
-        || "IS NOT NULL".equalsIgnoreCase( meta.getDeleteFields()[i].getFieldCondition() ) ) {
-        sql += " " + meta.getDeleteFields()[i].getFieldCondition() + " ";
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteField()[i].getFieldStream() ) );
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteField()[i].getFieldStream2() ) );
+      } else if ( "IS NULL".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() )
+        || "IS NOT NULL".equalsIgnoreCase( meta.getDeleteField()[i].getFieldCondition() ) ) {
+        sql += " " + meta.getDeleteField()[i].getFieldCondition() + " ";
       } else {
-        sql += " " + meta.getDeleteFields()[i].getFieldCondition() + " ? ";
-        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteFields()[i].getFieldStream() ) );
+        sql += " " + meta.getDeleteField()[i].getFieldCondition() + " ? ";
+        data.deleteParameterRowMeta.addValueMeta( rowMeta.searchValueMeta( meta.getDeleteField()[i].getFieldStream() ) );
       }
     }
 

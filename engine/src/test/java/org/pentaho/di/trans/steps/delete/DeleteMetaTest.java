@@ -38,6 +38,7 @@ import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.StepMeta;
 import org.pentaho.di.trans.step.StepMetaInterface;
+import org.pentaho.di.trans.steps.common.DeleteField;
 import org.pentaho.di.trans.steps.loadsave.LoadSaveTester;
 import org.pentaho.di.trans.steps.loadsave.initializer.InitializerInterface;
 import org.pentaho.di.trans.steps.loadsave.validator.ArrayLoadSaveValidator;
@@ -69,9 +70,9 @@ public class DeleteMetaTest implements InitializerInterface<StepMetaInterface> {
   @Before
   public void setUpLoadSave() throws Exception {
     PluginRegistry.init( false );
-    List<String> attributes =
-        Arrays.asList( "schemaName", "tableName", "commitSize", "databaseMeta", "fieldStream", "fieldLookup", "fieldCondition", "fieldStream2" );
-
+//    List<String> attributes =
+//        Arrays.asList( "schemaName", "tableName", "commitSize", "databaseMeta", "fieldStream", "fieldLookup", "fieldCondition", "fieldStream2" );
+    List<String> attributes = Arrays.asList( "schemaName", "tableName", "commitSize", "databaseMeta", "deleteField" );
     Map<String, String> getterMap = new HashMap<String, String>();
     Map<String, String> setterMap = new HashMap<String, String>();
     FieldLoadSaveValidator<String[]> stringArrayLoadSaveValidator =

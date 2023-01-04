@@ -176,15 +176,13 @@ public class DeleteMeta extends BaseStepMeta implements StepMetaInterface {
   @InjectionDeep
   private DeleteField[] deleteField = {};
 
-  public DeleteField[] getDeleteFields() {
+  public DeleteField[] getDeleteField() {
     return deleteField;
   }
 
-  public void setKeyFields(DeleteField[] keyFields) {
-    this.deleteField = keyFields;
+  public void setDeleteField(DeleteField[] deleteField) {
+    this.deleteField = deleteField;
   }
-
-
 
   /**
    * @return Returns the tableName.
